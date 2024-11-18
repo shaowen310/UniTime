@@ -1,0 +1,1 @@
+python run.py --gpu 0 --training_list execute_list/train_short.csv --max_token_num 17
