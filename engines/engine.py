@@ -24,12 +24,11 @@ class Engine(object):
         self.optimizer = torch.optim.AdamW(self.model.parameters(), lr=args.learning_rate, weight_decay=args.weight_decay)
         self.scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(self.optimizer, T_max=20, eta_min=1e-6)
         self.args = args
-        
+
         self._print_trainable_parameters(self.model.backbone)
         self._print_trainable_parameters(self.model)
-        
-        self._construct_unified_dataloaders()
 
+        self._construct_unified_dataloaders()
 
     def _print_trainable_parameters(self, model):
         freeze = 0
@@ -39,9 +38,11 @@ class Engine(object):
                 trainable += param.nelement()
             else:
                 freeze += param.nelement()
-        self.args.logger.info('Trainable Params: {}, All Params: {}, Percent: {}'.format(
-                              trainable, freeze + trainable, trainable / (freeze + trainable)))
-
+        self.args.logger.info(
+            "Trainable Params: {}, All Params: {}, Percent: {}".format(
+                trainable, freeze + trainable, trainable / (freeze + trainable)
+            )
+        )
 
     def _construct_unified_dataloaders(self):
         f = open(self.args.instruct_path)
@@ -111,7 +112,6 @@ class Engine(object):
                 self.test_loaders.append(test_loader)
                 self.test_engines.append(eng)
 
-
     def train(self):
         self.args.logger.info('Start training!')
 
@@ -169,7 +169,6 @@ class Engine(object):
             self.args.logger.info('Update learning rate to {}'.format(self.scheduler.get_last_lr()[0]))
 
         self.test()
-
 
     def test(self):
         self.args.logger.info('Start testing!')
