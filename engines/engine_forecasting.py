@@ -2,6 +2,7 @@ import os
 import torch
 import warnings
 import numpy as np
+from tqdm import tqdm
 warnings.filterwarnings('ignore')
 
 from utils.metrics import metric
@@ -79,7 +80,7 @@ class Engine_Forecasting:
         trues = []
         model.eval()
         with torch.no_grad():
-            for i, (batch_x, batch_y) in enumerate(test_loader):
+            for i, (batch_x, batch_y) in tqdm(enumerate(test_loader)):
                 batch_x = batch_x.float().to(self.args.device)
                 batch_y = batch_y.float().to(self.args.device)
 
