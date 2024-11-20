@@ -6,7 +6,7 @@ warnings.filterwarnings('ignore')
 
 from utils.metrics import metric
 
-class Engine_Forecasting(object):
+class Engine_Forecasting:
     def __init__(self, args):
         self.args = args
         self.data_id = args.data_id + '_' + str(args.seq_len) + '_' + str(args.pred_len)

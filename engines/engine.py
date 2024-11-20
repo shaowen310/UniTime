@@ -12,7 +12,7 @@ from models.unitime import UniTime
 from data_provider.data_factory import data_provider
 from engines.engine_forecasting import Engine_Forecasting
 
-class Engine(object):
+class Engine:
     def __init__(self, args):
         args.device = torch.device('cuda:{}'.format(args.gpu))
         model_map_dict = {
