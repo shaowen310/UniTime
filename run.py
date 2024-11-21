@@ -21,6 +21,7 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, default=2036, help='random seed')
     parser.add_argument('--target', type=str, default='OT', help='target feature in S or MS task')
     parser.add_argument('--label_len', type=int, default=0, help='label length')
+    parser.add_argument('--percent', type=int, default=100)
 
     # model
     parser.add_argument('--lm_pretrain_model', type=str, default='gpt2-small', help='pretrain model name')
@@ -52,8 +53,17 @@ if __name__ == '__main__':
     torch.manual_seed(args.seed)
     np.random.seed(args.seed)
 
-    # set logger    
-    args.checkpoint = 'checkpoint_{}_{}_{}_{}_{}_{}_{}_{}'.format(args.lm_pretrain_model.lower(), args.lm_ft_type, args.training_list.split('/')[1].split('.')[0], args.instruct_path.split('/')[1].split('.')[0], args.lm_layer_num, args.dec_trans_layer_num, args.mask_rate, args.max_backcast_len)
+    # set logger
+    args.checkpoint = "checkpoint_{}_{}_{}_{}_{}_{}_{}_{}".format(
+        args.lm_pretrain_model.lower(),
+        args.lm_ft_type,
+        args.training_list.split("/")[1].split(".")[0],
+        args.instruct_path.split("/")[1].split(".")[0],
+        args.lm_layer_num,
+        args.dec_trans_layer_num,
+        args.mask_rate,
+        args.max_backcast_len,
+    )
 
     if not os.path.exists(args.checkpoint):
         os.makedirs(args.checkpoint)

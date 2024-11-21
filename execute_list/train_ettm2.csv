@@ -1,0 +1,4 @@
+Data,Prediction,Train,Valid,Test
+ETTm2,96,1,0,0
+ETTm2,96,0,1,0
+ETTm2,96,0,0,1

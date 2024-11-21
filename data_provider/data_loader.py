@@ -1,20 +1,16 @@
-import os
-import re
-import glob
-import torch
-import numpy as np
 import pandas as pd
 
 from torch.utils.data import Dataset
 from sklearn.preprocessing import StandardScaler
 
 class Dataset_ETT_hour(Dataset):
-    def __init__(self, args, flag):
+    def __init__(self, args, flag, percent=100):
         assert flag in ['train', 'test', 'val']
         type_map = {'train': 0, 'val': 1, 'test': 2}
         self.set_type = type_map[flag]
 
         self.data_path = args.data_path
+        self.percent = percent
         self.features = args.features
         self.target = args.target
         self.scale = True
@@ -33,6 +29,9 @@ class Dataset_ETT_hour(Dataset):
         border2s = [12 * 30 * 24, 12 * 30 * 24 + 4 * 30 * 24, 12 * 30 * 24 + 8 * 30 * 24]
         border1 = border1s[self.set_type]
         border2 = border2s[self.set_type]
+        
+        if self.set_type == 0:
+            border2 = (border2 - self.seq_len) * self.percent // 100 + self.seq_len
 
         if self.features == 'M' or self.features == 'MS':
             cols_data = df_raw.columns[1:]
@@ -72,12 +71,13 @@ class Dataset_ETT_hour(Dataset):
 
 
 class Dataset_ETT_minute(Dataset):
-    def __init__(self, args, flag):
+    def __init__(self, args, flag, percent=100):
         assert flag in ['train', 'test', 'val']
         type_map = {'train': 0, 'val': 1, 'test': 2}
         self.set_type = type_map[flag]
 
         self.data_path = args.data_path
+        self.percent = percent
         self.features = args.features
         self.target = args.target
         self.scale = True
@@ -96,6 +96,9 @@ class Dataset_ETT_minute(Dataset):
         border2s = [12 * 30 * 24 * 4, 12 * 30 * 24 * 4 + 4 * 30 * 24 * 4, 12 * 30 * 24 * 4 + 8 * 30 * 24 * 4]
         border1 = border1s[self.set_type]
         border2 = border2s[self.set_type]
+        
+        if self.set_type == 0:
+            border2 = (border2 - self.seq_len) * self.percent // 100 + self.seq_len
 
         if self.features == 'M' or self.features == 'MS':
             cols_data = df_raw.columns[1:]

@@ -17,9 +17,11 @@ def data_provider(args, flag):
         batch_size = args.batch_size
 
     data_reader = map_dict[args.data_reader]
+    percent = args.percent if flag == 'train' else 100
     data_set = data_reader(
         args=args,
-        flag=flag
+        flag=flag,
+        percent=percent,
     )
 
     data_loader = DataLoader(
