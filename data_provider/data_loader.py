@@ -138,12 +138,13 @@ class Dataset_ETT_minute(Dataset):
 
 
 class Dataset_Custom(Dataset):
-    def __init__(self, args, flag):
+    def __init__(self, args, flag, percent=100):
         assert flag in ['train', 'test', 'val']
         type_map = {'train': 0, 'val': 1, 'test': 2}
         self.set_type = type_map[flag]
 
         self.data_path = args.data_path
+        self.percent = percent
         self.features = args.features
         self.target = args.target
         self.scale = True
@@ -169,6 +170,9 @@ class Dataset_Custom(Dataset):
         border2s = [num_train, num_train + num_vali, len(df_raw)]
         border1 = border1s[self.set_type]
         border2 = border2s[self.set_type]
+        
+        if self.set_type == 0:
+            border2 = (border2 - self.seq_len) * self.percent // 100 + self.seq_len
 
         if self.features == 'M' or self.features == 'MS':
             cols_data = df_raw.columns[1:]
